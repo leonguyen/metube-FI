@@ -1,0 +1,42 @@
+app = "metube-fly"
+
+primary_region = "sin"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  DOWNLOAD_DIR = "/downloads"
+  STATE_DIR = "/state"
+  TZ = "Asia/Ho_Chi_Minh"
+  UID = "1000"
+  GID = "1000"
+
+[mounts]
+  source = "metube_data"
+  destination = "/downloads"
+  initial_size = "10gb"
+
+[[services]]
+  internal_port = 8081
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.http_checks]]
+    interval = "15s"
+    timeout = "5s"
+    method = "get"
+    path = "/"
+    protocol = "http"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

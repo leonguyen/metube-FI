@@ -1,4 +1,5 @@
 .git
-.venv
-ui/.angular
-ui/node_modules
+.gitignore
+downloads
+*.log
+node_modules
